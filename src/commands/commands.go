@@ -30,7 +30,7 @@ func EvalCommand(message string) string {
 		return cd(command[1])
 	case "rm":
 		return rm(command[1])
-	case "removeFolder":
+	case "rmf":
 		return removeFolder(command[1])
 	case "mkdir":
 		return mkdir(command[1])
@@ -44,8 +44,10 @@ func EvalCommand(message string) string {
 		//have to join otherwise only first part is used and won't work
 		cmd := strings.Join(command[1:], " ")
 		return run(cmd)
+	case "-h":
+		return help()
 	default:
-		return "Not a valid call"
+		return "Not a valid call, send -h for help"
 	}
 }
 
@@ -250,4 +252,18 @@ func notValidCommand(command string) bool {
 	default:
 		return false
 	}
+}
+
+func help() string {
+	help := fmt.Sprintf("Command\t Action\n" +
+		"ls List files\n" +
+		"pwd  Print Working Directory\n" +
+		"cd [pathname] Change directory\n" +
+		"cat [filename] Print contents of file\n" +
+		"rm [filename] Remove file\n" +
+		"rmf [foldername] Remove folder\n" +
+		"mv [filefrom] [fileto] Move file\n" +
+		"cp [filefrom] [fileto] Copy file to\n" +
+		"run [command] Run command or program")
+	return help
 }
