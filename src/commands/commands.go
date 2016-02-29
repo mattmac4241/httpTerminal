@@ -239,7 +239,7 @@ func compareFiles(fileName1, fileName2 string) bool {
 	stat1, err1 := os.Stat(fileName1)
 	stat2, err2 := os.Stat(fileName2)
 	if err1 != nil || err2 != nil {
-		return false
+		return true
 	}
 	return os.SameFile(stat1, stat2)
 }
