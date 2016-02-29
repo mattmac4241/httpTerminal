@@ -1,0 +1,4 @@
+def test():
+    for i in range(100):
+        print i
+test()
