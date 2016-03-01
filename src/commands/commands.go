@@ -232,7 +232,7 @@ func copy(fileFrom, fileTo string) error {
 
 //check a file/folder to see if it is allowed to be used
 func notAllowed(fileName string) bool {
-	notAllowedFiles := []string{"src/server/server.go", "src/commands/commands.go", "src/commands", "src/server"}
+	notAllowedFiles := []string{"src/server/server.go", "src/commands/commands.go", "src/commands", "src/server", "src", "httpTerminal"}
 	for _, file := range notAllowedFiles {
 		if compareFiles(fileName, file) == true {
 			return true
