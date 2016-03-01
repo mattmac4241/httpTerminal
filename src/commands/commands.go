@@ -172,8 +172,8 @@ func run(command string) string {
 	case len(parts) == 1:
 		cmd, err = exec.Command(parts[0]).Output()
 	case len(parts) > 1:
-		args := strings.Join(parts[1:], " ")
-		cmd, err = exec.Command(parts[0], args).Output()
+		//args := strings.Join(parts[1:], " ")
+		cmd, err = exec.Command(parts[0], parts[1:]...).Output()
 	default:
 		return "No command to run "
 	}
