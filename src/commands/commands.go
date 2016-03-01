@@ -21,6 +21,7 @@ func EvalCommand(message string) string {
 			command = append(command, " ")
 		}
 	}
+	//evaluate the command, if it catches run the function command
 	switch command[0] {
 	case "ls":
 		return ls()
@@ -58,6 +59,7 @@ func ls() string {
 	if err != nil {
 		return "Failed to get list of files"
 	}
+	//loop through all the files in the directory and append them to fileList
 	for _, f := range files {
 		fileList += fmt.Sprintf("%s\n", f.Name())
 	}
@@ -96,6 +98,7 @@ func rm(filename string) string {
 
 //remove a folder
 func removeFolder(path string) string {
+	//check that folder is not protected
 	if notAllowed(path) == true {
 		return "Not allowed to remove that directory"
 	}
@@ -136,10 +139,12 @@ func mv(fileFrom, fileTo string) string {
 	if notAllowed(fileFrom) == true {
 		return "Not allowed to move that file"
 	}
+	//copy fileFrom into fileTo
 	err := copy(fileFrom, fileTo)
 	if err != nil {
 		return "Failed to move file"
 	}
+	//then delete fileFrom
 	rm(fileFrom)
 	return "Successfully moved file"
 }
@@ -159,7 +164,7 @@ func cp(fileFrom, fileTo string) string {
 func run(command string) string {
 	var cmd []byte
 	var err error
-	parts := strings.Fields(command)
+	parts := strings.Fields(command) //seperate command
 	if notValidCommand(parts[0]) == true {
 		return "Not allowed to run that command"
 	}
@@ -167,7 +172,8 @@ func run(command string) string {
 	case len(parts) == 1:
 		cmd, err = exec.Command(parts[0]).Output()
 	case len(parts) > 1:
-		cmd, err = exec.Command(parts[0], parts[1]).Output()
+		args := strings.Join(parts[1:], " ")
+		cmd, err = exec.Command(parts[0], args).Output()
 	default:
 		return "No command to run "
 	}
@@ -210,11 +216,12 @@ func copy(fileFrom, fileTo string) error {
 	if err != nil {
 		return errors.New("Failed to copy file")
 	}
-	//create a new file and set its contents
+	//create a new file
 	file2, err := os.Create(fileTo)
 	if err != nil {
 		return errors.New("Failed to copy file")
 	}
+	//write the new file
 	_, err = file2.Write(file1)
 	if err != nil {
 		return errors.New("Failed to copy file")
@@ -254,6 +261,7 @@ func notValidCommand(command string) bool {
 	}
 }
 
+//return the help string
 func help() string {
 	help := fmt.Sprintf("Command\t Action\n" +
 		"ls List files\n" +
